@@ -24,7 +24,7 @@ import getqueuedata
 #my define module
 import ConfigParser
 import configData
-import stdSampleParser
+import stdServLogParser
 import timeManager
 import effectMonitor
 
