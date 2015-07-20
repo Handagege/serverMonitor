@@ -25,15 +25,18 @@ class statsItem():
 		avgReqCost = 0.0
 		reqSuccessRatio = 0.0
 		reqNum = 0
+		delFlag = False
 		if self.reqNumStatusQueue[0] != 0:
 			reqSuccessRatio = float(self.reqSuccessNumStatusQueue[0])/float(self.reqNumStatusQueue[0])
 			reqNum = self.reqNumStatusQueue[0]
 		else:	
 			print "[waring] total req Num is 0"
+			delFlag = True
 		if self.reqNumNoErrorStatusQueue[0] != 0:
 			avgReqCost = self.reqCostStatusQueue[0]/float(self.reqNumNoErrorStatusQueue[0])
 		else:
 			print "[waring] all log is error type"
+			delFlag = True
 		del self.reqCostStatusQueue[0]
 		del self.reqNumNoErrorStatusQueue[0]
 		del self.reqSuccessNumStatusQueue[0]
@@ -42,7 +45,7 @@ class statsItem():
 		self.reqNumNoErrorStatusQueue.append(0)
 		self.reqSuccessNumStatusQueue.append(0)
 		self.reqNumStatusQueue.append(0)
-		return avgReqCost,reqSuccessRatio,reqNum
+		return avgReqCost,reqSuccessRatio,reqNum,delFlag
 
 	def printMsg(self):
 		print "request cost time status queue: ",self.reqCostStatusQueue
@@ -60,7 +63,7 @@ if __name__ == "__main__":
 		print "---------------- get %d data -------------"%(i)
 		#post time
 		if i%34 == 0:
-			avgReqCost,reqSuccessRatio,reqNum = myStatsItem.proStats()
+			avgReqCost,reqSuccessRatio,reqNum,delFlag= myStatsItem.proStats()
 			print "--- ARCValue: %.3f | RSRValue: %.3f | RNValue: %d ---"%(avgReqCost,reqSuccessRatio,reqNum)
 		myStatsItem.updateRNStatsQueue()
 		#error log
