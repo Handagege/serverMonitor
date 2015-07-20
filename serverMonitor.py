@@ -140,7 +140,7 @@ class effectMonitor():
 
 	def updateChartKeyTable(self):
 		self.newKeyFlag = False
-		self.ccProducer.deal(self.allInOneDic.keys())
+		#self.ccProducer.deal(self.allInOneDic.keys())
 
 	def writeKeyToFile(self,file,keys,suffix):
 		for d in keys:
@@ -164,7 +164,7 @@ def test2():
 	import ConfigParser
 	import timeManager
 	import configData
-	import stdSampleParser
+	import stdServLogParser
 	##my data prepare
 	##------------------------START-----------------------------------
 	#configure message
@@ -172,7 +172,7 @@ def test2():
 	cf.readfp(open('./conf/rinMethod.ini','r'))
 	c = configData.configData(cf)
 	#data parser
-	parser = stdSampleParser.stdSampleParser()
+	parser = stdServLogParser.stdServLogParser(c)
 	#init timeManager data
 	now = int(time.time())
 	t = timeManager.timeManager(int(c.period),now)
