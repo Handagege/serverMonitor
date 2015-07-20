@@ -14,7 +14,7 @@ class timeManager():
 	def setEndPoint(self,tempTime):
 		self.endPoint = tempTime-tempTime%(self.period)+self.period
 
-	def setPeriod(self,periog):
+	def setPeriod(self,period):
 		self.period = period
 
 	def updateEndPoint(self):

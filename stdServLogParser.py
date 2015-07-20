@@ -18,7 +18,8 @@ class stdServLogParser():
 		temp_dic_data[self.configData.logTypeKey] = frameLogItemList[0]
 		timeStr = frameLogItemList[1] + " " + frameLogItemList[2]
 		timeStr = timeStr[1:timeStr.find(".")]
-		temp_dic_data[self.configData.reqTimeKey] = timeStr
+		timestamp = int(time.mktime(time.strptime(timeStr,"%Y-%m-%d %H:%M:%S")))
+		temp_dic_data[self.configData.reqTimeKey] = timestamp
 		logID = frameLogItemList[3]
 		temp_dic_data[self.configData.logIDKey] = logID[1:-1]
 		temp_dic_data[self.configData.positionKey] = frameLogItemList[4][1:-1]

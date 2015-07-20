@@ -16,6 +16,7 @@ class configData():
 		self.featRouteKey = ConfigParser.get("info","feat_route_key")
 		self.costTimeKey = ConfigParser.get("info","cost_time_key")
 		self.extKey = ConfigParser.get("info","ext_key")
+		self.serverNodeNameKey = ConfigParser.get("info","server_node_name_key")
 
 		self.windowLength = ConfigParser.get("time","window_length")
 		self.timePeriod = ConfigParser.get("time","time_period")
@@ -50,6 +51,7 @@ if __name__=="__main__":
 	print c.postUrlPath
 	print c.loggerConfPath
 	print c.loggerName
+	print c.serverNodeNameKey
 
 	logging.config.fileConfig(c.loggerConfPath)
 	mylogger = logging.getLogger(c.loggerName)
