@@ -77,7 +77,7 @@ class effectMonitor():
 			self.logger.debug("end time point is %d"%(endPoint))
 			keyTime = reqTime
 			if keyTime >= startPoint and keyTime < endPoint:
-				pos = int((keyTime-shortStartPoint)/shortPeriod)
+				pos = int((keyTime-startPoint)/period)
 				##update data
 				self.updateStats(serverNodeName,pos,logType,reqCost,retCode)
 			elif keyTime >= endPoint:
@@ -115,15 +115,15 @@ class effectMonitor():
 	def updateStats(self,key,pos,logType,reqCost,retCode):
 		#total内容一并更新
 		self.allInOneDic[self.totalStatusKey].updateRNStatsQueue(pos)
-		self.allInOneDic[serverNodeName].updateRNStatsQueue(pos)
+		self.allInOneDic[key].updateRNStatsQueue(pos)
 		if logType != self.logTypeList[0]:
 			self.allInOneDic[self.totalStatusKey].updateRCStatsQueue(reqCost,pos)
 			self.allInOneDic[self.totalStatusKey].updateRNNEStatsQueue(pos)
-			self.allInOneDic[serverNodeName].updateRCStatsQueue(reqCost,pos)
-			self.allInOneDic[serverNodeName].updateRNNEStatsQueue(pos)
+			self.allInOneDic[key].updateRCStatsQueue(reqCost,pos)
+			self.allInOneDic[key].updateRNNEStatsQueue(pos)
 			if retCode >= 0:
 				self.allInOneDic[self.totalStatusKey].updateRSNStatsQueue(pos)
-				self.allInOneDic[serverNodeName].updateRSNStatsQueue(pos)
+				self.allInOneDic[key].updateRSNStatsQueue(pos)
 		
 	
 	def constructUrlData(self,key,rank,time):
@@ -175,7 +175,7 @@ def test2():
 	parser = stdServLogParser.stdServLogParser(c)
 	#init timeManager data
 	now = int(time.time())
-	t = timeManager.timeManager(int(c.period),now)
+	t = timeManager.timeManager(int(c.timePeriod),now)
 	#key processer
 	effectMonitorInstance = effectMonitor(c,t)
 
@@ -190,7 +190,8 @@ def test2():
 		logType = random.choice(logTypeList)
 		retCode = random.choice(retCodeList)
 		serverNodeName = random.choice(serverNodeNameList)
-		data = ""
+		stdTimeStr = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(createTime))
+		data = "%s [%s.657] [logid:0] [tcpserver.cpp:152] | REQ_ID:10758252990973006192;SERV:Ranker;CMD:rank;RET_CODE:%d;FEAT_ROUTE:b_id_01->ct_id_01->pt_id_01->st_id_03;COST:3449(9-3421-3-13-1-2);EXT3:%s;"%(logType,stdTimeStr,retCode,serverNodeName)
 		effectMonitorInstance.logger.debug(data)
 		data = parser.parse(data)
 		effectMonitorInstance.deal(data)
