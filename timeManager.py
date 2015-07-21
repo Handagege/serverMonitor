@@ -4,45 +4,34 @@ import time
 
 class timeManager():
 	def __init__(self):
-		self.longPeriod = 24*60*60
-		self.longEndPoint = 0
-		self.shortPeriod = 5*60
-		self.shortEndPoint = 0
-	def __init__(self,longPeriod,shortPeriod):
-		self.longPeriod = longPeriod
-		now = time.time()
-		self.longEndPoint = int(time.mktime(time.strptime(time.strftime('%Y%m%d',time.localtime(now)),'%Y%m%d')))+self.longPeriod
-		self.shortPeriod = shortPeriod
-		self.shortEndPoint = now-now%(self.shortPeriod)+self.shortPeriod
+		self.Period = 0
+		self.endPoint = 0
+
+	def __init__(self,period,tempTime):
+		self.period = period
+		self.endPoint = tempTime-tempTime%(self.period)+self.period
+
 	def setEndPoint(self,tempTime):
-		#self.longEndPoint = int(time.mktime(time.strptime(time.strftime('%Y%m%d',time.localtime(tempTime)),'%Y%m%d')))+self.longPeriod
-		self.longEndPoint = tempTime-tempTime%(self.longPeriod)+self.longPeriod
-		self.shortEndPoint = tempTime-tempTime%(self.shortPeriod)+self.shortPeriod
-	def setPeriod(self,longPeriod,shortPeriod):
-		self.longPeriod = longPeriod
-		self.shortPeriod = shortPeriod
-	def updateLongPoint(self):
-		self.longEndPoint += self.longPeriod
-	def updateShortPoint(self):
-		self.shortEndPoint += self.shortPeriod
-		
+		self.endPoint = tempTime-tempTime%(self.period)+self.period
+
+	def setPeriod(self,period):
+		self.period = period
+
+	def updateEndPoint(self):
+		self.endPoint += self.period
+
 
 if __name__ == "__main__":
-	t = timeManager(24*60*60,5*60)
-	print t.longPeriod
-	print t.shortPeriod
-	print "time long end point:"
-	print t.longEndPoint
-	print time.localtime(t.longEndPoint)
-	print "time short end point:"
-	print t.shortEndPoint
-	print time.localtime(t.shortEndPoint)
-	t.updateLongPoint()
-	t.updateShortPoint()
-	print "after update time long end point:"
-	print t.longEndPoint
-	print time.localtime(t.longEndPoint)
+	t = timeManager(5*60,int(time.time()))
+	print t.period
+	print t.endPoint
+	print time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(t.endPoint))
+	t.updateEndPoint()
+	print "after update time end point:"
+	print t.endPoint
+	print time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(t.endPoint))
+	t.updateEndPoint()
 	print "after update time short end point:"
-	print t.shortEndPoint
-	print time.localtime(t.shortEndPoint)
+	print t.endPoint
+	print time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(t.endPoint))
 

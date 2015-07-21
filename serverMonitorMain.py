@@ -24,9 +24,9 @@ import getqueuedata
 #my define module
 import ConfigParser
 import configData
-import stdSampleParser
+import stdServLogParser
 import timeManager
-import effectMonitor
+import serverMonitor
 
 #框架固定代码
 break_flag = False
@@ -58,12 +58,11 @@ def run(property_dict) :
 	cf.readfp(open('./conf/rinMethod.ini','r'))
 	c = configData.configData(cf)
 	#data parser
-	parser = stdSampleParser.stdSampleParser()
+	parser = stdServLogParser.stdServLogParser()
 	#init timeManager data
-	t = timeManager.timeManager(int(c.longTimePeriod),int(c.shortTimePeriod))
-	now = time.time()
-	t.setEndPoint(int(now))
-	effectMonitorInstance = effectMonitor.effectMonitor(c,t)
+	now = int(time.time())
+	t = timeManager.timeManager(c.timePeriod,now)
+	serverMonitorInstance = serverMonitor.serverMonitor(c,t)
 	##------------------------END-----------------------------------
 
 	#循环从队列中获取数据
@@ -93,8 +92,8 @@ def run(property_dict) :
 
 			#------------------------START-----------------------------------
 			#print data
-			effectMonitorInstance.deal(parser.parse(data))
-			effectMonitorInstance.printStatsItemMsgToLog()
+			serverMonitorInstance.deal(parser.parse(data))
+			serverMonitorInstance.printStatsItemMsgToLog()
 			parser.clear()
 			#------------------------END-------------------------------------
 		except Exception, e:
